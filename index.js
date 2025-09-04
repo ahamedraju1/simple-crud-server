@@ -4,12 +4,9 @@ require('dotenv').config();
 const  {MongoClient, ServerApiVersion, ObjectId} = require('mongodb'); 
 const port = process.env.PORT || 3000
 const cors = require('cors')
-
+ 
 app.use(cors())
 app.use(express.json())
-
-  console.log("USER_DB:", process.env.USER_DB)
-  console.log("PASS_DB:", process.env.PASS_DB)
 
  
 const uri =`mongodb+srv://${process.env.USER_DB}:${process.env.PASS_DB}@cluster0.szermie.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
