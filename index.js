@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express()
+require('dotenv').config();
 const  {MongoClient, ServerApiVersion, ObjectId} = require('mongodb'); 
 const port = process.env.PORT || 3000
 const cors = require('cors')
@@ -7,10 +8,11 @@ const cors = require('cors')
 app.use(cors())
 app.use(express.json())
 
-// user:simpleDBuser
-//pass:PXdWMie9snEG3PN   
+  console.log("USER_DB:", process.env.USER_DB)
+  console.log("PASS_DB:", process.env.PASS_DB)
+
  
-const uri = "mongodb+srv://simpleDBuser:PXdWMie9snEG3PN@cluster0.szermie.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const uri =`mongodb+srv://${process.env.USER_DB}:${process.env.PASS_DB}@cluster0.szermie.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -25,6 +27,8 @@ async function run(){
      
     try{
         await client.connect();
+        console.log("Connected to Mongodb Atlas");
+
         const userCollection = client.db('usersdb').collection('users')
         
          app.get('/users', async(req, res)=>{
@@ -47,7 +51,7 @@ async function run(){
 
           res.send(result);
         })
-
+ 
 
         app.put('/users/:id', async(req, res)=>{
            const id = req.params.id;
@@ -65,7 +69,7 @@ async function run(){
 
           const options = { upsert: true };
           console.log(user);
-          
+
           const result = await userCollection.updateOne(filter, updatedDoc, options)
            res.send(result);
 
